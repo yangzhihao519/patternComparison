@@ -1,6 +1,6 @@
 # Pattern Comparison
 
-Experiment in judging whether two images are the same of different.
+Experiment in judging whether two images are the same or different.
 
 A csv file contains the results of the experiment will be generated in the end.
 
