@@ -1,13 +1,15 @@
-var trial_nr = -2; // 2 practice trial
 var user = getUserId();
 var itemPos = "";
 var visGroup = "";
-var nrTrials = 2; // 2 formal trial
 var phase = "";
 var currentPatterns = {};
 var clickedTime;
 var createdTime;
 var reactionTime;
+var trainingPerSize = 4;
+var experimentPerSize = 20;
+var trial_nr = -(trainingPerSize * 6); // 6 size from 5 to 10
+var nrTrials = experimentPerSize * 6; // 6 size from 5 to 10
 
 //shuffle orders
 function shuffle(array) {
@@ -31,20 +33,72 @@ function getUserId() {
         s4() + '-' + s4() + s4() + s4();
 }
 
-// Initialise patterns for training
-var trainingPatternsArray = [
-    {pattern1: "0-pattern-1", pattern2: "0-pattern-2", isSame: false, size: 8},
-    {pattern1: "0-pattern-1", pattern2: "0-pattern-1", isSame: true, size: 8}
-];
+// Generate Patterns in each trials
+var trainingPatternsArray = [];
+var experimentPatternsArray = [];
+
+function getPatterns(trainingPerSize, experimentPerSize){
+    for(var i=5; i<=10; i++){
+        // Training trials 
+        var n = trainingPerSize/2;
+        for(var j=1; j<=n; j++){
+            // Different trials
+            var trainingPatternDifferent = {
+                pattern1: i+"-"+j+"-1", 
+                pattern2: i+"-"+j+"-2", 
+                isSame: false, 
+                size: i
+            }
+
+            // Same trails
+            var x = j+n;
+            var trainingPatternSame = {
+                pattern1: i+"-"+x+"-1", 
+                pattern2: i+"-"+x+"-1", 
+                isSame: true, 
+                size: i
+            }
+
+            trainingPatternsArray.push(trainingPatternDifferent);
+            trainingPatternsArray.push(trainingPatternSame);
+        }
+
+        // Experiment trials
+        var m = experimentPerSize/2;
+        for(var j=trainingPerSize+1; j<=m+trainingPerSize; j++){
+            // Different trails
+            var experimentPatternDifferent = {
+                pattern1: i+"-"+j+"-1", 
+                pattern2: i+"-"+j+"-2", 
+                isSame: false, 
+                size: i
+            }
+
+            // Same trails
+            var x = j+m;
+            var experimentPatternSame = {
+                pattern1: i+"-"+x+"-1", 
+                pattern2: i+"-"+x+"-1", 
+                isSame: true, 
+                size: i
+            }
+
+            experimentPatternsArray.push(experimentPatternDifferent);
+            experimentPatternsArray.push(experimentPatternSame);
+        }
+
+        
+    }
+}
+
+getPatterns(trainingPerSize, experimentPerSize); // number of training trials per size, number of experiment trials per size
+
+console.log("trainingPatternsArray");
+console.log(trainingPatternsArray);
+console.log("experimentPatternsArray");
+console.log(experimentPatternsArray);
 
 shuffle(trainingPatternsArray);
-
-// Initialise patterns for experiment
-var experimentPatternsArray = [
-    {pattern1: "1-pattern-1", pattern2: "1-pattern-2", isSame: false, size: 8},
-    {pattern1: "2-pattern-1", pattern2: "2-pattern-1", isSame: true, size: 8}
-];
-
 shuffle(experimentPatternsArray);
 
 // Show patterns
@@ -68,8 +122,8 @@ function showPatterns() {
             currentPatterns = experimentPatternsArray[trial_nr-1];
         }
         console.log(currentPatterns);
-        document.getElementById("pattern-1").innerHTML = "<img src=\"images/"+currentPatterns.pattern1+ ".jpg\"></img>";
-        document.getElementById("pattern-2").innerHTML = "<img src=\"images/"+currentPatterns.pattern2+ ".jpg\"></img>";
+        document.getElementById("pattern-1").innerHTML = "<img src=\"images/"+currentPatterns.pattern1+ ".png\"></img>";
+        document.getElementById("pattern-2").innerHTML = "<img src=\"images/"+currentPatterns.pattern2+ ".png\"></img>";
     }
     else {
         sendData();
@@ -127,7 +181,7 @@ function sendData() {
 
     var a = document.createElement('a');
     a.textContent = 'Download your data.';
-    a.download = "results.csv";
+    a.download = user+"-results.csv";
     a.href = 'data:text/csv;charset=utf-8,' + escape(csv);
     $("#complete-area").append(a);
     $('#complete-area').show();
