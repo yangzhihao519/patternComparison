@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pattern Comparison</title>
+    <!-- JS -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+    
+    <!-- CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="start" class='message'>
+        <h1>Pattern Comparison</h1>
+        <h2>Instructions</h2>
+        <p>Try to decide whether the two images are the same or different as quickly as possible.</p>
+        <p> You start a trial by clicking on the 'Start' button shown under the description. On pressing the button, the images appears. You will then need to determine whethere the shown two images are the same or different by clicking on the "Same" or "Different" button.</p>
+        <button id="start" class="fixedToBotton btn-block" onClick='showPatterns()'>Start</button>
+    </div>
+
+    <!--Patterns-->
+    <div id="patterns" style="display: none">
+        <p id="patterns-message"></p>
+        <div class="row" style="margin-right: 0; margin-left: 0;">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-5 showPattern">
+                <p id="pattern-1" class="pattern"></p>
+            </div>
+            <div class="col-md-5 showPattern">
+                <p id="pattern-2" class="pattern"></p>
+            </div>
+        </div>
+        <div class="row" style="margin-right: 0; margin-left: 0;">
+            <div class="col-md-6">
+                <button id="same" class="toFeedback btn-block" onClick="makeDecision(this.id)">Same</button>
+            </div>
+            <div class="col-md-6">
+                <button id="different" class="toFeedback btn-block" onClick="makeDecision(this.id)">Different</button>
+            </div>
+        </div>
+    </div>
+
+    <!--Feedback-->
+    <div id="feedback" class='message' style="display:none">
+        <p id='feedback-message'></p>
+        <button class='fixedToBotton btn-block' onClick='showPatterns()' tabindex="-1">Next</button>
+    </div>
+
+    <!--End-->
+    <div class="result" id="complete-area" style="display:none;">
+        <h2>You have reached the end of the experiment.</h2>
+    </div>
+
+    <div class="result" id="incomplete-area" style="display:none;color:#f00;">
+        <p><strong>There was a problem submitting your data.</strong></p>
+        <button id="retry-submit">Try again</button>
+    </div>
+</body>
+
+</html>
